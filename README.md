@@ -1,10 +1,11 @@
 # Overview
 
-Welcome to my collection of discussions about and working examples demonstratring techniques to build secure digital solutions.
+Welcome to my project discussing topics related to digital security.
 
 ## Topics
 
 * [Public Key Infrastructure](./docs/pki.md)
+* [Authentication Protocol](./docs/auth.md)
 
 ## Disclaimer
 

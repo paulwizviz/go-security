@@ -4,8 +4,9 @@ Welcome to my project discussing topics related to digital security.
 
 ## Topics
 
-* [Public Key Infrastructure](./docs/pki.md)
 * [Authentication Protocol](./docs/auth.md)
+* [Cerificates](./docs/certs.md)
+* [Public Key Infrastructure](./docs/pki.md)
 
 ## Disclaimer
 

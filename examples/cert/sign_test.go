@@ -4,63 +4,21 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
-	"crypto/x509/pkix"
 	"fmt"
-	"math/big"
-	"net"
 	"reflect"
-	"time"
 )
-
-// CA's Certificate specification
-var caCert *x509.Certificate = &x509.Certificate{
-	SerialNumber: big.NewInt(256),
-	Subject: pkix.Name{
-		Organization:  []string{"ORGANIZATION_NAME"},
-		Country:       []string{"COUNTRY_CODE"},
-		Province:      []string{"PROVINCE"},
-		Locality:      []string{"CITY"},
-		StreetAddress: []string{"ADDRESS"},
-		PostalCode:    []string{"POSTAL_CODE"},
-	},
-	NotBefore:             time.Now(),
-	NotAfter:              time.Now().AddDate(10, 0, 0),
-	IsCA:                  true,
-	ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
-	KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
-	BasicConstraintsValid: true,
-}
-
-// Certification to be signed by the certificate authority
-var cert *x509.Certificate = &x509.Certificate{
-	SerialNumber: big.NewInt(2019),
-	Subject: pkix.Name{
-		Organization:  []string{"Acme Pte Ltd"},
-		Country:       []string{"UK"},
-		Province:      []string{""},
-		Locality:      []string{"London"},
-		StreetAddress: []string{"Somewhere in london"},
-		PostalCode:    []string{"LH00LH"},
-	},
-	IPAddresses:  []net.IP{net.IPv4(127, 0, 0, 1), net.IPv6loopback},
-	NotBefore:    time.Now(),
-	NotAfter:     time.Now().AddDate(10, 0, 0),
-	SubjectKeyId: []byte{1, 2, 3, 4, 6},
-	ExtKeyUsage:  []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
-	KeyUsage:     x509.KeyUsageDigitalSignature,
-}
 
 func Example_signCACert() {
 
 	// Creating RSA private key
 	caPrivKey, _ := rsa.GenerateKey(rand.Reader, 1024) // Private key for the CA
 
-	signedCert, err := x509.CreateCertificate(rand.Reader, caCert, caCert, caPrivKey.PublicKey, caPrivKey)
+	signedCert, err := x509.CreateCertificate(rand.Reader, caCertTemplate, caCertTemplate, caPrivKey.PublicKey, caPrivKey)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	signedCert, err = x509.CreateCertificate(rand.Reader, caCert, caCert, &caPrivKey.PublicKey, caPrivKey)
+	signedCert, err = x509.CreateCertificate(rand.Reader, caCertTemplate, caCertTemplate, &caPrivKey.PublicKey, caPrivKey)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -82,7 +40,7 @@ func Example_signCert() {
 	caPrivKey, _ := rsa.GenerateKey(rand.Reader, 1024)
 	certPrivKey, _ := rsa.GenerateKey(rand.Reader, 1024)
 
-	signedWithCACert, err := x509.CreateCertificate(rand.Reader, cert, caCert, &certPrivKey.PublicKey, caPrivKey)
+	signedWithCACert, err := x509.CreateCertificate(rand.Reader, certTemplate, caCertTemplate, &certPrivKey.PublicKey, caPrivKey)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -93,7 +51,7 @@ func Example_signCert() {
 	}
 	fmt.Println(caC.Issuer.Organization)
 
-	signedWithCert, err := x509.CreateCertificate(rand.Reader, cert, cert, &certPrivKey.PublicKey, caPrivKey)
+	signedWithCert, err := x509.CreateCertificate(rand.Reader, certTemplate, certTemplate, &certPrivKey.PublicKey, caPrivKey)
 	if err != nil {
 		fmt.Println(err)
 	}

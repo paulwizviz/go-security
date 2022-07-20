@@ -1,6 +1,6 @@
 # Public Key Certificates
 
-In cryptography, a public key certificate, also known as a digital certificate or identity certificate, is an electronic document used to prove the validity of a public key (Source: [wiki][https://en.wikipedia.org/wiki/Public_key_certificate]).
+In cryptography, a public key certificate, also known as a digital certificate or identity certificate, is an electronic document used to prove the validity of a public key (Source: [wiki](https://en.wikipedia.org/wiki/Public_key_certificate)).
 
 ## Procedure of obtaining Public Key certificate
 
@@ -68,7 +68,7 @@ Certificate Revocation List syntax:
            revocationDate UTCTime}
 ```
 
-Source: [wiki][https://en.wikipedia.org/wiki/X.509]
+Source: [wiki](https://en.wikipedia.org/wiki/X.509)
 
 ## Types of certificate
 
@@ -79,7 +79,7 @@ Source: [wiki][https://en.wikipedia.org/wiki/X.509]
 * Wildcard domain - Certificate based the name of the server
 * Internal certificate - Based on own CA
 
-Source: [Professor Messer][https://www.youtube.com/watch?v=o5gAgmRjo6A]
+Source: [Professor Messer](https://www.youtube.com/watch?v=o5gAgmRjo6A)
 
 * TLS/SSL server certificate - use by server to present a digital certificate proving that it is the intended destination. The Subject field of the certificate must identify the primary host name of the server as the Common Name.
 * TLS/SSL client certificate - use by a TLS service to authenticate a client.
@@ -91,7 +91,7 @@ Source: [Professor Messer][https://www.youtube.com/watch?v=o5gAgmRjo6A]
 * Role-base certificate - identify the role of a subscriber.
 * Group certificate.
 
-Source: [wiki][https://en.wikipedia.org/wiki/X.509] 
+Source: [wiki](https://en.wikipedia.org/wiki/X.509)
 
 ## Certificate filename extensions
 
@@ -101,7 +101,7 @@ Source: [wiki][https://en.wikipedia.org/wiki/X.509]
 * .p12 – PKCS#12, may contain certificate(s) (public) and private keys (password protected)
 * .pfx – PFX, predecessor of PKCS#12 (usually contains data in PKCS#12 format, e.g., with PFX files generated in IIS)
 
-Source: [wiki][ https://en.wikipedia.org/wiki/X.509#Certificate_filename_extensions] & [Professor Messer][https://www.youtube.com/watch?v=5T6MjlFsRWI]
+Source: [wiki](https://en.wikipedia.org/wiki/X.509#Certificate_filename_extensions) & [Professor Messer](https://www.youtube.com/watch?v=5T6MjlFsRWI)
 
 ## Network Working Group - Request for comments
 

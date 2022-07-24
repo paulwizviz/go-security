@@ -117,5 +117,7 @@ Source: [wiki](https://en.wikipedia.org/wiki/X.509#Certificate_filename_extensio
 
 The following demonstrates technique using Go to:
 
-* [sign a certificate](../examples/cert/sign_test.go)
-* [encoding keys and certificates](../examples/pemenc/pemenc_test.go)
+* [Encoding keys and certificates](../examples/pemenc/pemenc_test.go)
+* [Certificate Signing Request](../examples/cert/csr_test.go)
+* [Sign a certificate](../examples/cert/sign_test.go)
+* [Verifying a certificate](../examples/cert/verify_test.go)

@@ -11,59 +11,69 @@ import (
 func Example_signCACert() {
 
 	// Creating RSA private key
-	caPrivKey, _ := rsa.GenerateKey(rand.Reader, 1024) // Private key for the CA
+	rootPrivKey, _ := rsa.GenerateKey(rand.Reader, 1024) // Private key for the CA
 
-	signedCert, err := x509.CreateCertificate(rand.Reader, caCertTemplate, caCertTemplate, caPrivKey.PublicKey, caPrivKey)
+	// Self signing the root certificate, passing public key by value
+	// This will produce error
+	signedCert, err := x509.CreateCertificate(rand.Reader, rootCertTemplate, rootCertTemplate, rootPrivKey.PublicKey, rootPrivKey)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	signedCert, err = x509.CreateCertificate(rand.Reader, caCertTemplate, caCertTemplate, &caPrivKey.PublicKey, caPrivKey)
+	// Self signing the root certificate with pointer to public key
+	signedCert, err = x509.CreateCertificate(rand.Reader, rootCertTemplate, rootCertTemplate, &rootPrivKey.PublicKey, rootPrivKey)
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	// Determine if cert contains the public key
 	cert, _ := x509.ParseCertificate(signedCert)
-	if reflect.DeepEqual(cert.PublicKey, &caPrivKey.PublicKey) {
-		fmt.Println("abc")
+	if reflect.DeepEqual(cert.PublicKey, &rootPrivKey.PublicKey) {
+		fmt.Println("Public key found in signed certificate")
 	}
 
 	// Output:
 	// x509: unsupported public key type: rsa.PublicKey
-	// abc
+	// Public key found in signed certificate
 
 }
 
-func Example_signCert() {
+// This example create an intermediate cert from root cert
+func Example_signICert() {
 
-	caPrivKey, _ := rsa.GenerateKey(rand.Reader, 1024)
-	certPrivKey, _ := rsa.GenerateKey(rand.Reader, 1024)
+	rootPrivKey, _ := rsa.GenerateKey(rand.Reader, 1024) // Root private key
+	iPrivKey, _ := rsa.GenerateKey(rand.Reader, 1024)    // Intermediate private key
 
-	signedWithCACert, err := x509.CreateCertificate(rand.Reader, certTemplate, caCertTemplate, &certPrivKey.PublicKey, caPrivKey)
+	selfSignedRootCert, err := x509.CreateCertificate(rand.Reader, rootCertTemplate, rootCertTemplate, &rootPrivKey.PublicKey, rootPrivKey)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	caC, err := x509.ParseCertificate(signedWithCACert)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(caC.Issuer.Organization)
-
-	signedWithCert, err := x509.CreateCertificate(rand.Reader, certTemplate, certTemplate, &certPrivKey.PublicKey, caPrivKey)
+	signedRootCert, err := x509.ParseCertificate(selfSignedRootCert)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	c, err := x509.ParseCertificate(signedWithCert)
+	signeICert, err := x509.CreateCertificate(rand.Reader, iCertTemplate, signedRootCert, &iPrivKey.PublicKey, rootPrivKey)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(c.Issuer.Organization)
+
+	// Unmarshal intermediate cert in bytes
+	iCert, err := x509.ParseCertificate(signeICert)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(iCert.Issuer)
+	fmt.Println(iCert.Subject)
+
+	if reflect.DeepEqual(iCert.PublicKey, &iPrivKey.PublicKey) {
+		fmt.Println("Same certificate public key")
+	}
 
 	// Output:
-	// [ORGANIZATION_NAME]
-	// [Acme Pte Ltd]
+	// O=ACME Root Inc,POSTALCODE=ZIP 123456,STREET=Some Street,L=Some City,ST=Some State,C=US
+	// O=ACME Intermediate AS,POSTALCODE=123456 EU,STREET=Some Street,L=Some City,ST=Some State,C=EU
+	// Same certificate public key
 
 }

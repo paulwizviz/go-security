@@ -8,16 +8,15 @@ import (
 	"time"
 )
 
-// CA's Certificate specification
-var caCertTemplate *x509.Certificate = &x509.Certificate{
+var rootCertTemplate *x509.Certificate = &x509.Certificate{
 	SerialNumber: big.NewInt(256),
 	Subject: pkix.Name{
-		Organization:  []string{"ORGANIZATION_NAME"},
-		Country:       []string{"COUNTRY_CODE"},
-		Province:      []string{"PROVINCE"},
-		Locality:      []string{"CITY"},
-		StreetAddress: []string{"ADDRESS"},
-		PostalCode:    []string{"POSTAL_CODE"},
+		Organization:  []string{"ACME Root Inc"},
+		Country:       []string{"US"},
+		Province:      []string{"Some State"},
+		Locality:      []string{"Some City"},
+		StreetAddress: []string{"Some Street"},
+		PostalCode:    []string{"ZIP 123456"},
 	},
 	NotBefore:             time.Now(),
 	NotAfter:              time.Now().AddDate(10, 0, 0),
@@ -27,13 +26,30 @@ var caCertTemplate *x509.Certificate = &x509.Certificate{
 	BasicConstraintsValid: true,
 }
 
-// Certification to be signed by the certificate authority
-var certTemplate *x509.Certificate = &x509.Certificate{
+var iCertTemplate *x509.Certificate = &x509.Certificate{
+	SerialNumber: big.NewInt(256),
+	Subject: pkix.Name{
+		Organization:  []string{"ACME Intermediate AS"},
+		Country:       []string{"EU"},
+		Province:      []string{"Some State"},
+		Locality:      []string{"Some City"},
+		StreetAddress: []string{"Some Street"},
+		PostalCode:    []string{"123456 EU"},
+	},
+	NotBefore:             time.Now(),
+	NotAfter:              time.Now().AddDate(10, 0, 0),
+	IsCA:                  true,
+	ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
+	KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
+	BasicConstraintsValid: true,
+}
+
+var leafCertTemplate *x509.Certificate = &x509.Certificate{
 	SerialNumber: big.NewInt(2019),
 	Subject: pkix.Name{
-		Organization:  []string{"Acme Pte Ltd"},
+		Organization:  []string{"ACME Pte Ltd"},
 		Country:       []string{"UK"},
-		Province:      []string{""},
+		Province:      []string{"South East"},
 		Locality:      []string{"London"},
 		StreetAddress: []string{"Somewhere in london"},
 		PostalCode:    []string{"LH00LH"},

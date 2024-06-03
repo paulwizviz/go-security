@@ -9,7 +9,6 @@ import (
 	"encoding/pem"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path"
@@ -58,12 +57,12 @@ func main() {
 	rsaCAPK, _ := rsa.GenerateKey(rand.Reader, 1024)
 
 	keyPEM := genPrivateKeyPEM(rsaCAPK)
-	if err := ioutil.WriteFile(path.Join(*walletDirPtr, "pk.pem"), keyPEM.Bytes(), 0755); err != nil {
+	if err := os.WriteFile(path.Join(*walletDirPtr, "pk.pem"), keyPEM.Bytes(), 0755); err != nil {
 		log.Fatal(err)
 	}
 
 	icertPEM := genICertPEM(&rsaCAPK.PublicKey, rsaCAPK)
-	if err := ioutil.WriteFile(path.Join(*walletDirPtr, "ca.cer"), icertPEM.Bytes(), 0755); err != nil {
+	if err := os.WriteFile(path.Join(*walletDirPtr, "ca.cer"), icertPEM.Bytes(), 0755); err != nil {
 		log.Fatal(err)
 	}
 }

@@ -7,9 +7,9 @@ This project demonstrates techniques to work with Go cryptographic packages.
 * Certificate Signing
     * [References](https://github.com/paulwizviz/system-engineering.git)
     * Working examples:
-        * [Certificate Signing Request](../internal/cert/csr_test.go)
-        * [Sign a certificate](../internal/cert/sign_test.go)
-        * [Verifying a certificate](../internal/cert/verify_test.go)
+        * [Certificate Signing Request](./internal/cert/csr_test.go)
+        * [Sign a certificate](./internal/cert/sign_test.go)
+        * [Verifying a certificate](./internal/cert/verify_test.go)
 
 * Checksum
     * [References](https://github.com/paulwizviz/system-engineering.git)

@@ -1,6 +1,6 @@
 # Overview
 
-Welcome to my project discussing topics related to digital security.
+This project demonstrates techniques to work with Go cryptographic packages.
 
 ## Topics
 
@@ -21,4 +21,6 @@ Welcome to my project discussing topics related to digital security.
 
 ## Disclaimer
 
-The working examples in this projects are purely for illustration only and are subject to modification without notice. Any opinions expressed is this project mine or belongs to the author of any referenced materials.
+This project is for educational purposes only. It is not a production-ready solution and requires significant modifications, rigorous security audits, and extensive testing before use in any production environment.
+
+This project is ongoing and may undergo changes without prior notification. By using this project, you acknowledge that you do so at your own risk. The authors of this project accept no liability for any issues or damages resulting from its use. Please use this project as a learning resource and not as a fully functional or secure application.
